@@ -17,11 +17,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     gcc \
     python3-dev \
+    pkg-config \
+    libc-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements.txt and install Python dependencies
 COPY requirements.txt /app/
-RUN pip install --upgrade pip setuptools wheel && \
+RUN pip install --no-cache-dir setuptools==69.5.1 && \
+    pip install --upgrade pip wheel && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
