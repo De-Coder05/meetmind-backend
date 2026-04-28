@@ -11,13 +11,17 @@ WORKDIR /app
 
 # Install system dependencies
 # We need ffmpeg for video frame extraction and audio processing
+# git and gcc are often needed for building python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
+    git \
+    gcc \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements.txt and install Python dependencies
 COPY requirements.txt /app/
-RUN pip install --upgrade pip && \
+RUN pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
