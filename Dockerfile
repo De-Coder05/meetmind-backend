@@ -1,5 +1,5 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Use the full Python image instead of slim to avoid build isolation issues with ML packages
+FROM python:3.9
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -14,17 +14,11 @@ WORKDIR /app
 # git and gcc are often needed for building python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
-    git \
-    gcc \
-    python3-dev \
-    pkg-config \
-    libc-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements.txt and install Python dependencies
 COPY requirements.txt /app/
-RUN pip install --no-cache-dir setuptools==69.5.1 && \
-    pip install --upgrade pip wheel && \
+RUN pip install --upgrade pip setuptools==69.5.1 wheel && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
