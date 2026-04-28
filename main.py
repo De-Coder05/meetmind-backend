@@ -42,6 +42,15 @@ app.include_router(meetings_router, prefix="/api/v1")
 app.include_router(tasks_router, prefix="/api/v1")
 
 
+@app.get("/")
+async def root():
+    return {
+        "message": "MeetMind API is running",
+        "docs": "/docs",
+        "version": "0.1.0"
+    }
+
+
 @app.get("/health")
 async def health():
     return {"status": "ok", "env": settings.app_env}
